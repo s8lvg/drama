@@ -369,7 +369,6 @@ int main(int argc, char *argv[]) {
 
     tries = expected_sets * 125;
 
-    logDebug("CPU: %s\n", getCPUModel());
     logDebug("Memory percentage: %f\n", fraction_of_physical_memory);
     logDebug("Number of reads: %lu\n", num_reads);
     logDebug("Expected sets: %lu\n", expected_sets);
