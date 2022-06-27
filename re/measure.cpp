@@ -29,8 +29,8 @@
 int verbosity = 4;
 
 // default values
-size_t num_reads = 5000;
-double fraction_of_physical_memory = 0.6;
+size_t num_reads = 10000;
+double fraction_of_physical_memory = 0.8;
 size_t expected_sets = 8;
 
 #define POINTER_SIZE       (sizeof(void*) * 8)
@@ -411,8 +411,8 @@ int main(int argc, char *argv[]) {
         failed = 0;
         search_set:
         failed++;
-        if (failed > 10) {
-            logWarning("%s\n", "Couldn't find set after 10 tries, giving up, sorry!");
+        if (failed > 20) {
+            logWarning("%s\n", "Couldn't find set after 20 tries, giving up, sorry!");
             break;
         }
         logInfo("Searching for set %d (try %d)\n", found_sets + 1, failed);
