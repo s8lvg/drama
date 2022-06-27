@@ -151,6 +151,12 @@ uint64_t rdtsc2() {
     return val;
 }
 
+static inline void flush(size_t* addr) {
+    asm volatile("xor a7, a7, a7\n"
+                 "add a7, a7, %0\n"
+                 ".long 0x278800b" // DCACHE.CIVA a7
+                 : : "r"(addr) : "a7","memory"); 
+}
 
 // ----------------------------------------------
 uint64_t getTiming(pointer first, pointer second) {
@@ -171,8 +177,15 @@ uint64_t getTiming(pointer first, pointer second) {
             *s;
             *(s + number_of_reads);
 
-            asm volatile("clflush (%0)" : : "r" (f) : "memory");
-            asm volatile("clflush (%0)" : : "r" (s) : "memory");
+    
+            asm volatile("xor a7, a7, a7\n"
+                 "add a7, a7, %0\n"
+                 ".long 0x278800b" // DCACHE.CIVA a7
+                 : : "r"(f) : "a7","memory"); 
+            asm volatile("xor a7, a7, a7\n"
+                 "add a7, a7, %0\n"
+                 ".long 0x278800b" // DCACHE.CIVA a7
+                 : : "r"(s) : "a7","memory"); 
         }
 
         uint64_t res = (rdtsc2() - t0) / (num_reads);
