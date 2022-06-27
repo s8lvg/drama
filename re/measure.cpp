@@ -139,20 +139,16 @@ long utime() {
 
 // ----------------------------------------------
 uint64_t rdtsc() {
-    uint64_t a, d;
-    asm volatile ("xor %%rax, %%rax\n" "cpuid"::: "rax", "rbx", "rcx", "rdx");
-    asm volatile ("rdtscp" : "=a" (a), "=d" (d) : : "rcx");
-    a = (d << 32) | a;
-    return a;
+    uint64_t val;
+    asm volatile ("rdcycle %0" : "=r"(val));
+    return val;
 }
 
 // ----------------------------------------------
 uint64_t rdtsc2() {
-    uint64_t a, d;
-    asm volatile ("rdtscp" : "=a" (a), "=d" (d) : : "rcx");
-    asm volatile ("cpuid"::: "rax", "rbx", "rcx", "rdx");
-    a = (d << 32) | a;
-    return a;
+    uint64_t val;
+    asm volatile ("rdcycle %0" : "=r"(val));
+    return val;
 }
 
 
